@@ -4,6 +4,7 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
+import me.xujichang.lib.polling.jobs.JobPool
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.ThreadFactory
@@ -29,10 +30,11 @@ class PollingService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        scheduledFuture = mExecutor.scheduleWithFixedDelay({
-            //..
-            Log.i(TAG, "schedule :  . . . .")
-        }, 1000, 1000, TimeUnit.MILLISECONDS)
+        if (null == scheduledFuture) {
+            scheduledFuture = mExecutor.scheduleWithFixedDelay({
+                JobPool.update()
+            }, 1000, 1000, TimeUnit.MILLISECONDS)
+        }
         return super.onStartCommand(intent, flags, startId)
     }
 

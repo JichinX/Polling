@@ -5,7 +5,10 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
+import me.xujichang.lib.polling.jobs.JobPool
+import me.xujichang.lib.polling.jobs.ResumedJob
 
 class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
@@ -16,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         //检查白名单权限
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!permissionsCheck.isIgnoreBatteryOptimizations(this)) {
@@ -46,5 +50,9 @@ class MainActivity : AppCompatActivity() {
                 this, PollingService::class.java
             )
         )
+    }
+
+    fun toPolling(view: View) {
+        startActivity(Intent(this, PollingActivity::class.java))
     }
 }
