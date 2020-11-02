@@ -102,7 +102,6 @@ class AppLifecycleOwner private constructor() : LifecycleOwner {
     }
 
     private fun dispatchDestroyIfNeeded() {
-        Log.i(TAG, "dispatchDestroyIfNeeded: ")
         isDestroyed.set(mCreatedCounter == 0)
         if (isDestroyed.get()) {
             destroyedFunc?.invoke()
@@ -110,7 +109,6 @@ class AppLifecycleOwner private constructor() : LifecycleOwner {
     }
 
     private fun dispatchStopIfNeeded() {
-        Log.i(TAG, "dispatchStopIfNeeded: $mStartedCounter")
         if (mStartedCounter == 0 && mPauseSent) {
             mRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
             mStopSent = true
@@ -119,7 +117,6 @@ class AppLifecycleOwner private constructor() : LifecycleOwner {
 
 
     private fun dispatchPauseIfNeeded() {
-        Log.i(TAG, "dispatchPauseIfNeeded: $mResumedCounter")
         if (mResumedCounter == 0) {
             mPauseSent = true
             mRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)

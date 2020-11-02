@@ -20,19 +20,16 @@ class JobWithLifecycle(
 ) :
     BaseJob(interval),
     LifecycleEventObserver {
-    private val TAG = "ResumedJob"
 
     init {
         lifecycleOwner.lifecycle.addObserver(this)
     }
 
     override fun doJob() {
-        Log.i(TAG, "doJob: $lifecycleOwner $workState ${lifecycleOwner.lifecycle.currentState}")
         runFunc.invoke()
     }
 
     override fun canUpdate(): Boolean {
-        Log.i(TAG, "canUpdate: $workState ${lifecycleOwner.lifecycle.currentState}")
         return lifecycleOwner.lifecycle.currentState.isAtLeast(workState) && updateInterceptor.invoke()
     }
 

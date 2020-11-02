@@ -19,23 +19,12 @@ object JobPool {
     private val tagJobs = mutableMapOf<String, BaseJob>()
     private val idsJobs = LongSparseArray<BaseJob>()
     fun update() {
-        Log.i(TAG, "update: jobs size = ${jobs.size}")
         jobs.forEach {
             it.update()
         }
-        Log.i(
-            TAG, "update: tagJobs size = ${
-                tagJobs.size
-            }"
-        )
         tagJobs.entries.forEach { entry ->
             entry.value.update()
         }
-        Log.i(
-            TAG, "update: idsJobs size = ${
-                idsJobs.size()
-            }"
-        )
         idsJobs.forEach { _, job ->
             job.update()
         }
