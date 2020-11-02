@@ -1,6 +1,9 @@
 package me.xujichang.lib.polling.jobs
 
 import android.util.Log
+import androidx.collection.LongSparseArray
+import androidx.collection.forEach
+import androidx.collection.set
 
 /**
  *project：Polling
@@ -14,26 +17,61 @@ object JobPool {
     private val TAG = "JobPool"
     private val jobs = mutableListOf<BaseJob>()
     private val tagJobs = mutableMapOf<String, BaseJob>()
+    private val idsJobs = LongSparseArray<BaseJob>()
     fun update() {
         Log.i(TAG, "update: jobs size = ${jobs.size}")
+        jobs.forEach {
+            it.update()
+        }
         Log.i(
             TAG, "update: tagJobs size = ${
                 tagJobs.size
             }"
         )
-        jobs.forEach {
-            it.update()
-        }
         tagJobs.entries.forEach { entry ->
             entry.value.update()
         }
+        Log.i(
+            TAG, "update: idsJobs size = ${
+                idsJobs.size()
+            }"
+        )
+        idsJobs.forEach { _, job ->
+            job.update()
+        }
     }
 
-    fun addJob(job: BaseJob) {
-        jobs.add(job)
+    fun add(job: JobWrapper) {
+        when (job) {
+            is CleanJob -> {
+                jobs.add(job.job)
+            }
+            is TagJob -> {
+                tagJobs[job.tag] = job.job
+            }
+            is IdsJob -> {
+                idsJobs[job.id] = job.job
+            }
+            else -> {
+                //...
+            }
+        }
     }
 
-    fun addTagJob(tagJob: TagJob) {
-        tagJobs[tagJob.tag] = tagJob.job
+    fun removeJob(job: JobWrapper) {
+        when (job) {
+            is CleanJob -> {
+                jobs.remove(job.job)
+            }
+            is TagJob -> {
+                tagJobs.remove(job.tag)
+            }
+            is IdsJob -> {
+                idsJobs.remove(job.id)
+            }
+            else -> {
+                //...
+            }
+        }
     }
 }

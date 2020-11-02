@@ -1,11 +1,14 @@
 package me.xujichang.lib.polling
 
 import android.app.Application
+import android.content.Intent
 import android.util.Log
-import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.lifecycle.*
+import me.xujichang.lib.polling.jobs.CleanJob
 import me.xujichang.lib.polling.jobs.JobPool
-import me.xujichang.lib.polling.jobs.ResumedJob
+import me.xujichang.lib.polling.jobs.JobWithLifecycle
 import me.xujichang.lib.polling.jobs.TagJob
+import me.xujichang.lib.provider.AppLifecycleOwner
 
 /**
  *project：Polling
@@ -16,14 +19,40 @@ import me.xujichang.lib.polling.jobs.TagJob
  *created by 10/30/20 17:10
  */
 class App : Application() {
+    private val TAG = "app"
+
     override fun onCreate() {
         super.onCreate()
-        AppLifecycleOwner.init(this)
-        JobPool.addTagJob(TagJob("App-1", (ResumedJob(ProcessLifecycleOwner.get()) {
-            Log.i("ResumedJob", "App-1 :ProcessLifecycleOwner ...")
-        })))
-        JobPool.addTagJob(TagJob("App-2", (ResumedJob(AppLifecycleOwner.get()) {
-            Log.i("ResumedJob", "App-2 :ProcessLifecycleOwner ...")
-        })))
+        Log.i(TAG, "onCreate: ")
+        JobPool.add(
+            TagJob(
+                ProcessLifecycleOwner.get(),
+                JobWithLifecycle(
+                    ProcessLifecycleOwner.get(),
+                    workState = Lifecycle.State.RESUMED
+                ) {
+                    //...
+                },
+                "App-1",
+            )
+        )
+        JobPool.add(
+            CleanJob(
+                AppLifecycleOwner.get(),
+                JobWithLifecycle(
+                    AppLifecycleOwner.get(),
+                    workState = Lifecycle.State.CREATED,
+                    updateInterceptor = {
+                        !AppLifecycleOwner.isDestroyed()
+                    }) {
+                    //...
+                }
+            )
+        )
+        startService(
+            Intent(
+                this, PollingService::class.java
+            )
+        )
     }
 }

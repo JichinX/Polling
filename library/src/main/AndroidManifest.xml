@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="me.xujichang.lib.polling">
 
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <application>
         <service android:name=".PollingService" />
+        <provider
+            android:name="me.xujichang.lib.provider.AppLifecycleOwnerInitializer"
+            android:authorities="${applicationId}.app-lifecycle"
+            android:exported="false"
+            android:multiprocess="true" />
     </application>
 </manifest>

@@ -1,4 +1,4 @@
-package me.xujichang.lib.polling.callbacks
+package me.xujichang.lib.provider
 
 import android.app.Activity
 import android.app.Application.ActivityLifecycleCallbacks

@@ -1,10 +1,10 @@
 package me.xujichang.lib.polling
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import me.xujichang.lib.polling.jobs.IdsJob
 import me.xujichang.lib.polling.jobs.JobPool
-import me.xujichang.lib.polling.jobs.ResumedJob
+import me.xujichang.lib.polling.jobs.JobWithLifecycle
 import me.xujichang.lib.polling.jobs.TagJob
 
 /**
@@ -19,8 +19,8 @@ class PollingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_polling)
-        JobPool.addTagJob(TagJob("Polling", ResumedJob(this) {
-            Log.i("ResumedJob", "Activity ... ")
-        }))
+        JobPool.add(IdsJob(this, JobWithLifecycle(this) {
+            //...
+        }, 1000))
     }
 }

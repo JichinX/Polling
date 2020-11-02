@@ -7,8 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import me.xujichang.lib.polling.jobs.JobPool
-import me.xujichang.lib.polling.jobs.ResumedJob
 
 class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
@@ -45,11 +43,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun startPoll() {
         Log.i(TAG, "startPoll: ")
-        startService(
-            Intent(
-                this, PollingService::class.java
-            )
-        )
+
     }
 
     fun toPolling(view: View) {
