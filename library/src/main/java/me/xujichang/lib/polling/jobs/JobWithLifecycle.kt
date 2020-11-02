@@ -13,11 +13,12 @@ import androidx.lifecycle.*
  */
 class JobWithLifecycle(
     private val lifecycleOwner: LifecycleOwner,
+    interval: Int = DEFAULT_INTERVAL,
     private val workState: Lifecycle.State = Lifecycle.State.RESUMED,
     private val updateInterceptor: (() -> Boolean) = { true },
     private val runFunc: () -> Unit,
 ) :
-    BaseJob(),
+    BaseJob(interval),
     LifecycleEventObserver {
     private val TAG = "ResumedJob"
 

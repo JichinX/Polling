@@ -29,6 +29,7 @@ class App : Application() {
                 ProcessLifecycleOwner.get(),
                 JobWithLifecycle(
                     ProcessLifecycleOwner.get(),
+                    interval = 3,
                     workState = Lifecycle.State.RESUMED
                 ) {
                     //...

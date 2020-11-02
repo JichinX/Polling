@@ -17,7 +17,7 @@ const val DEFAULT_INTERVAL = 1
  *@author xujichang
  *created by 10/30/20 16:22
  */
-abstract class BaseJob(interval: Int = DEFAULT_INTERVAL, id: Long = -1, tag: String? = null) {
+abstract class BaseJob(interval: Int = DEFAULT_INTERVAL) {
     private val maxTimes = interval
     private val counter = AtomicInteger(0)
     private val jobStatus = AtomicReference<JobStatus>(JobStatus.INITIAL)
