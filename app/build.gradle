@@ -43,5 +43,5 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 //    implementation project(path: ':library')
 //    implementation("me.xujichang.lib:polling:1.0.0-SNAPSHOT")
-    implementation("me.xujichang.lib:polling:1.0.0-20201102.092818-4")
+    implementation("me.xujichang.lib:polling:1.0.0-20201102.093218-5")
 }
